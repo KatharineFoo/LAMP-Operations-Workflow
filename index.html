@@ -571,14 +571,20 @@
       pmUnlocked = true;
       pmGateOverlay.classList.remove('open');
       if(pmPendingFile){ handlePmFile(pmPendingFile); pmPendingFile = null; }
+      else { pmFile.click(); } // gate was opened via the "Choose file" button — now open the picker
     } else {
       pmErr.textContent = 'Incorrect passcode. Try again.';
       pmPassInput.value = '';
       pmPassInput.focus();
     }
   }
-  // Only gate the moment a file is actually about to be processed — opening the
-  // file picker itself needs no passcode, just replacing the map's data does.
+  // Clicking a "choose file" button asks for the passcode first, then opens the
+  // OS file picker. Dropping a file directly stashes it and processes it right
+  // after a correct passcode, without a second file-picker step.
+  function requestChooseFile(){
+    if(pmUnlocked) pmFile.click();
+    else openPmGate();
+  }
   function requestFileProcessing(file){
     if(pmUnlocked){ handlePmFile(file); }
     else { pmPendingFile = file; openPmGate(); }
@@ -598,8 +604,8 @@
   const pmLegend = document.getElementById('pmLegend');
   const pmDurationWrap = document.getElementById('pmDurationWrap');
 
-  document.getElementById('pmChooseBtn').addEventListener('click', ()=> pmFile.click());
-  document.getElementById('pmChooseAgainBtn').addEventListener('click', ()=> pmFile.click());
+  document.getElementById('pmChooseBtn').addEventListener('click', requestChooseFile);
+  document.getElementById('pmChooseAgainBtn').addEventListener('click', requestChooseFile);
   pmFile.addEventListener('change', e=>{ if(e.target.files[0]) requestFileProcessing(e.target.files[0]); });
   ['dragover','dragenter'].forEach(evt=> pmDrop.addEventListener(evt, e=>{ e.preventDefault(); pmDrop.classList.add('drag'); }));
   ['dragleave','drop'].forEach(evt=> pmDrop.addEventListener(evt, e=>{ e.preventDefault(); pmDrop.classList.remove('drag'); }));
