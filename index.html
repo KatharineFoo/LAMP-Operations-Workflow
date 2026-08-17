@@ -103,10 +103,15 @@
   .pm-title .icon svg{width:18px;height:18px}
   .pm-title h2{font-size:21px;font-weight:600;color:var(--ink)}
 
-  /* Process Map password gate */
+  /* Process Map password gate (overlay, shown only when uploading) */
+  .pm-gate-overlay{
+    display:none;position:fixed;inset:0;background:rgba(51,48,58,.45);z-index:100;
+    align-items:center;justify-content:center;padding:24px;
+  }
+  .pm-gate-overlay.open{display:flex}
   .pm-gate{
-    background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-    padding:56px 40px;text-align:center;max-width:420px;margin:20px auto;
+    background:var(--panel);border-radius:16px;box-shadow:0 20px 60px rgba(51,48,58,.3);
+    padding:40px 36px;text-align:center;max-width:380px;width:100%;
     display:flex;flex-direction:column;align-items:center;gap:14px;
   }
   .pm-gate .icon{width:52px;height:52px;border-radius:14px;background:var(--teal);color:#fff;
@@ -256,7 +261,7 @@
   .pm-modal-rows{display:flex;flex-direction:column;gap:14px}
   .pm-modal-row .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
     color:var(--ink-soft);margin-bottom:4px}
-  .pm-modal-row .val{font-size:14.5px;color:var(--ink);line-height:1.55}
+  .pm-modal-row .val{font-size:14.5px;color:var(--ink);line-height:1.55;white-space:pre-line}
   .pm-modal-row a{color:var(--coral);font-weight:600;text-decoration:none}
   .pm-modal-row a:hover{text-decoration:underline}
 
@@ -332,17 +337,22 @@
       </div>
     </div>
 
-    <!-- Password gate -->
-    <div class="pm-gate" id="pmGate">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <h3>This section is protected</h3>
-      <p>Enter the passcode to upload and view the process map.</p>
-      <input type="password" id="pmPassInput" placeholder="Passcode" autocomplete="off">
-      <button class="btn btn-primary" id="pmUnlockBtn">Unlock</button>
-      <div class="err" id="pmErr"></div>
+    <!-- Password gate: shown only when trying to upload/replace the map file -->
+    <div class="pm-gate-overlay" id="pmGateOverlay">
+      <div class="pm-gate" id="pmGate">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3>Uploading is protected</h3>
+        <p>Enter the passcode to upload a new process map file.</p>
+        <input type="password" id="pmPassInput" placeholder="Passcode" autocomplete="off">
+        <div style="display:flex; gap:8px">
+          <button class="btn" id="pmGateCancelBtn">Cancel</button>
+          <button class="btn btn-primary" id="pmUnlockBtn">Unlock</button>
+        </div>
+        <div class="err" id="pmErr"></div>
+      </div>
     </div>
 
-    <div id="pmContent" style="display:none">
+    <div id="pmContent">
       <div class="pm-upload" id="pmDrop">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 0L7 8m5-5 5 5"/><path d="M3 15v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/></svg></div>
         <h3>Upload the process map Excel</h3>
@@ -529,44 +539,53 @@
     if(!e.target.closest('.qr-combo')) qrDropdown.classList.remove('open');
   });
 
-  /* ---------- Process Map: passcode gate ---------- */
+  /* ---------- Process Map: view is open; only uploading a new file is gated ---------- */
   // Change this to set your own passcode. This is a simple front-end gate only
   // (anyone with the file's source code can read it) — not real security.
   const PM_PASSCODE = "LAMP";
   let pmUnlocked = false;
+  let pmPendingFile = null;
 
-  const pmGate = document.getElementById('pmGate');
+  const pmGateOverlay = document.getElementById('pmGateOverlay');
   const pmContent = document.getElementById('pmContent');
   const pmPassInput = document.getElementById('pmPassInput');
   const pmErr = document.getElementById('pmErr');
 
   function openProcessMap(){
     showOnly(pmview);
-    if(pmUnlocked){
-      pmGate.style.display = 'none';
-      pmContent.style.display = 'block';
-      if(!pmHasRendered) loadDefaultMap();
-    } else {
-      pmGate.style.display = 'flex';
-      pmContent.style.display = 'none';
-      pmPassInput.value = '';
-      pmErr.textContent = '';
-      setTimeout(()=>pmPassInput.focus(), 100);
-    }
+    if(!pmHasRendered) loadDefaultMap();
+  }
+
+  function openPmGate(){
+    pmPassInput.value = '';
+    pmErr.textContent = '';
+    pmGateOverlay.classList.add('open');
+    setTimeout(()=>pmPassInput.focus(), 100);
+  }
+  function closePmGate(){
+    pmGateOverlay.classList.remove('open');
+    pmPendingFile = null;
   }
   function tryPmUnlock(){
     if(pmPassInput.value.trim().toUpperCase() === PM_PASSCODE){
       pmUnlocked = true;
-      pmGate.style.display = 'none';
-      pmContent.style.display = 'block';
-      if(!pmHasRendered) loadDefaultMap();
+      pmGateOverlay.classList.remove('open');
+      if(pmPendingFile){ handlePmFile(pmPendingFile); pmPendingFile = null; }
     } else {
       pmErr.textContent = 'Incorrect passcode. Try again.';
       pmPassInput.value = '';
       pmPassInput.focus();
     }
   }
+  // Only gate the moment a file is actually about to be processed — opening the
+  // file picker itself needs no passcode, just replacing the map's data does.
+  function requestFileProcessing(file){
+    if(pmUnlocked){ handlePmFile(file); }
+    else { pmPendingFile = file; openPmGate(); }
+  }
   document.getElementById('pmUnlockBtn').addEventListener('click', tryPmUnlock);
+  document.getElementById('pmGateCancelBtn').addEventListener('click', closePmGate);
+  pmGateOverlay.addEventListener('click', e=>{ if(e.target === pmGateOverlay) closePmGate(); });
   pmPassInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') tryPmUnlock(); });
 
   /* ---------- Process Map: upload + parse + auto-layout + render ---------- */
@@ -581,10 +600,10 @@
 
   document.getElementById('pmChooseBtn').addEventListener('click', ()=> pmFile.click());
   document.getElementById('pmChooseAgainBtn').addEventListener('click', ()=> pmFile.click());
-  pmFile.addEventListener('change', e=>{ if(e.target.files[0]) handlePmFile(e.target.files[0]); });
+  pmFile.addEventListener('change', e=>{ if(e.target.files[0]) requestFileProcessing(e.target.files[0]); });
   ['dragover','dragenter'].forEach(evt=> pmDrop.addEventListener(evt, e=>{ e.preventDefault(); pmDrop.classList.add('drag'); }));
   ['dragleave','drop'].forEach(evt=> pmDrop.addEventListener(evt, e=>{ e.preventDefault(); pmDrop.classList.remove('drag'); }));
-  pmDrop.addEventListener('drop', e=>{ if(e.dataTransfer.files[0]) handlePmFile(e.dataTransfer.files[0]); });
+  pmDrop.addEventListener('drop', e=>{ if(e.dataTransfer.files[0]) requestFileProcessing(e.dataTransfer.files[0]); });
 
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -593,7 +612,7 @@
   // Preloaded process map data, so teammates opening this file see the current
   // map immediately without needing to upload the Excel themselves. Re-upload
   // via "Upload a different file" to update this for everyone (see note at end of chat).
-  const DEFAULT_ROWS = [["Step ID","Step Name","Type","Trigger / Stage","Next Step(s)","Person In-charge","Doc Link","Condition","Notes","DURATION:Duration > 2 weeks"],["T1","BD Inform of Incoming Programme","trigger",null,"T2","BD",null,null,null,null],["T2","Contractual Agreement with Client","trigger",null,"T3","BD",null,null,null,null],["T3","Identify Service Standard","trigger",null,"T4","BD & Ops",null,null,null,null],["T4","Pre-Programme Preparation","trigger",null,"T5, T6, T7","Ops","https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Workflow%20Overview/Service%20Blueprint%20Template.xlsx?d=w69ac292f995d4755850830ccb076a624&csf=1&web=1&e=qKt7Tx",null,null,null],["T5","Course and Curriculum Logistics","trigger",null,"T8","Ops",null,null,null,null],["T6","Daily Operations","trigger",null,"D1, D2, D3, D4, D5","Ops",null,null,null,null],["D1","Participants Management","action",null,"T8","Ops",null,null,null,null],["D2","Transportation","action",null,"T8","Ops",null,null,null,null],["D3","Programme Services","action",null,"T8","Ops",null,null,null,null],["D4","F&B","action",null,"T8","Ops",null,null,null,null],["D5","Interpretation","action",null,"T8","Ops",null,null,null,null],["T7","Event Management","trigger",null,"E1, E2","Ops",null,null,null,null],["E1","Welcome Ceremony","action",null,"T8","BD & Ops",null,null,null,null],["E2","Closing / Graduation Ceremony","action",null,"T8","BD & Ops",null,null,null,null],["T8","Post-Programme Wrap Up","end",null,"END","BD & Ops",null,null,null,null]];
+  const DEFAULT_ROWS = [["Step ID", "Step Name", "Type", "Trigger / Stage", "Next Step(s)", "Person In-charge", "Notes", "Doc Link", "Condition", "DURATION:Duration > 2 weeks"], ["T1", "BD Inform of Incoming Programme", "trigger", null, "T2", "BD", "- Indicate programme dates on LAMP Ops Calendar  \n- Set up programme folder in CAMP/MBA Billingual Teams ", null, null, null], ["T2", "Contractual Agreement with Client", "trigger", null, "T3", "BD", "- Agreement signed: procure items commence once agreement has been signed, unless of approved exceptional circumstances\n\n- Understand the programme Requirements: programme structure, objective, participants profile and key activities\n\n- Budget prepared for anticipated expenses\n\n- Participants list, dietary restrictions and other important information to take note of ", null, null, null], ["T3", "Identify Service Standard", "trigger", null, "T4", "BD & Ops", "- Clarify the expected level of service and participant experience across key touch points: accommodatiion, transportation, meals, classroom support and etc.", null, null, null], ["T4", "Pre-Programme Preparation", "trigger", null, "T5, T6, T7", "Ops", "- Prepare service blueprint: identify procurement and operational requirements, set timelines, assign responsibilities and track key tasks through to completion\n\n- Prepare course schedule", "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Workflow%20Overview/Service%20Blueprint%20Template.xlsx?d=w69ac292f995d4755850830ccb076a624&csf=1&web=1&e=qKt7Tx", null, null], ["T5", "Course and Curriculum Logistics", "trigger", null, "T8", "Ops", "- Mark instructor's calendar\n\n- Shar participants profile with instructor\n\n- Request from instructors: CV (if not the latest version), course outline (if required), reading materials to purchase (if any), slide (1 week before session)\n\n- Prepare Appointment Letter (internal faculty) / Consultancy Agreement (external faculty)\n\n- For external faculty: check if carpark reservation required\n\n- External activities: reserve slots with guide / venue (Changi Experience Studio, URA etc.)\n\n- Set up course evaluation", null, null, null], ["T6", "Daily Operations", "trigger", null, "D1, D2, D3, D4, D5", "Ops", "Day-to-day coordination to ensure smooth and seamless delivery of the programme. Focused on proactive coordination, timely issue resolution and maintaining a positive participant experience.", null, null, null], ["D1", "Participants Management", "action", null, "T8", "Ops", "- Attendance list\n\n- Print name tents\n\n- Set up WeChat group \n\n- Depending on programme requirements: student pass application, insurance, access to NTU email, NTULearn, WiFi, campus sports facilities, NTU library", null, null, null], ["D2", "Transportation", "action", null, "T8", "Ops", "- Reference schedule and arrange transportation ", null, null, null], ["D3", "Programme Services", "action", null, "T8", "Ops", "- Confirm booking of classroom and breakout rooms (if required) \n\n- Classroom set up: stationery, landscaping (if required), flip charts\n\n- Borrow IT equipment: laptop, clicker, portable mics ", null, null, null], ["D4", "F&B", "action", null, "T8", "Ops", "- Internal dining: catering arrangements \n\n- External dining: restaurants, hotels etc.", null, null, null], ["D5", "Interpretation (if required)", "action", null, "T8", "Ops", "- Preferred venue: level 02-043 Computing Room 1, equipped with SI Booth \n\n- Engage interpreters, vendors to supply interpretation equipment\n\n- Engage vendor to translate slides", null, null, null], ["T7", "Event Management", "trigger", null, "E1, E2", "Ops", "Plan and coordinate events for well-rounded programme experience:\n\n- Welcome Ceremony \n\n- Closing Ceremony ", null, null, null], ["E1", "Welcome Ceremony", "action", null, "T8", "BD & Ops", "Ceremonial Welcome:\n- Welcome pack \n- Welcome message on WCYP screens \n- Welcome address for Dean / Assoc Dean / Asst Dean / PD\n- Campus tour\n- Photography coverage \n\nWelcome Lunch:\n- Venue recce and booking\n- Landscaping \n- AV and Staging \n- Catering \n- Faculty invitations ", null, null, null], ["E2", "Closing / Graduation Ceremony", "action", null, "T8", "BD & Ops", "Ceremonial Closing:\n- Certificates printed and signed \n- Closing address for Dean / Assoc Dean / Asst Dean / PD\n- Photography coverage\n\nClosing Dinner: \n- Venue recce and booking\n- Landscaping\n- AV and Staging\n- Catering\n- Faculty invitations", null, null, null], ["T8", "Post-Programme Wrap Up", "end", null, "END", "BD & Ops", "- Compile evaluation feedback \n\n- Complete payment to vendors\n\n- Arrange payment to instructors \n\n- Post-programme meeting with PDs > client \n\n- Send evaluation feedback results to instructors", null, null, null]];
   let pmHasRendered = false;
 
   function loadDefaultMap(){
@@ -648,15 +667,36 @@
     header.forEach(h=>{
       if(typeof h === 'string' && h.toUpperCase().startsWith('DURATION:')) duration = h.slice(9).trim();
     });
+    // Resolve each expected column by its header text (not fixed position), so
+    // reordering columns in the spreadsheet doesn't silently scramble the data.
+    const norm = h => (typeof h === 'string' ? h.trim().toUpperCase() : '');
+    const findCol = (fallbackIdx, ...labels) => {
+      for(const label of labels){
+        const idx = header.findIndex(h => norm(h).startsWith(label));
+        if(idx !== -1) return idx;
+      }
+      return fallbackIdx;
+    };
+    const col = {
+      id: findCol(0, 'STEP ID'),
+      name: findCol(1, 'STEP NAME'),
+      type: findCol(2, 'TYPE'),
+      stage: findCol(3, 'TRIGGER'),
+      next: findCol(4, 'NEXT STEP'),
+      person: findCol(5, 'PERSON IN-CHARGE', 'PERSON IN CHARGE', 'PERSON IN'),
+      link: findCol(6, 'DOC LINK'),
+      cond: findCol(7, 'CONDITION'),
+      notes: findCol(8, 'NOTES'),
+    };
     for(let i = headerIdx + 1; i < rows.length; i++){
       const r = rows[i];
-      if(!r || !r[0]) continue;
-      const id = String(r[0]).trim();
+      if(!r || !r[col.id]) continue;
+      const id = String(r[col.id]).trim();
       if(!id) continue;
-      const next = (r[4] || '').toString().split(',').map(s=>s.trim()).filter(Boolean);
+      const next = (r[col.next] || '').toString().split(',').map(s=>s.trim()).filter(Boolean);
       nodes[id] = {
-        id, name: r[1] || id, type: (r[2] || 'action').toString().trim().toLowerCase(),
-        stage: r[3], next, person: r[5], link: r[6], cond: r[7], notes: r[8]
+        id, name: r[col.name] || id, type: (r[col.type] || 'action').toString().trim().toLowerCase(),
+        stage: r[col.stage], next, person: r[col.person], link: r[col.link], cond: r[col.cond], notes: r[col.notes]
       };
       order.push(id);
     }
