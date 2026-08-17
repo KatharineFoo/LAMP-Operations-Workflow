@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LAMP Operations Workflow</title>
+<title>LAMP Resource Hub</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
@@ -223,10 +223,10 @@
 
   .qr-result{
     background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-    padding:26px 28px;max-width:600px;
+    padding:26px 28px;max-width:720px;
   }
   .qr-result .cat{
-    font-family:"DM Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    font-family:"DM Mono",ui-monospace,monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--coral);font-weight:600;margin-bottom:10px;
   }
   .qr-result p{font-size:14.5px;color:var(--ink);line-height:1.6;margin-bottom:18px}
@@ -236,6 +236,15 @@
   }
   .qr-result a.qr-link:hover{background:#c0596a}
   .qr-placeholder{color:var(--ink-soft);font-size:14.5px}
+
+  .qr-subgrid{display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:14px}
+  .qr-subcard{
+    border:1px solid var(--line);border-radius:12px;background:var(--bg);
+    padding:18px 16px;display:flex;flex-direction:column;gap:10px;
+  }
+  .qr-subcard h4{font-size:14px;font-weight:600;color:var(--ink)}
+  .qr-subcard p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;flex:1}
+  .qr-subcard a.qr-link{font-size:12.5px;padding:8px 13px;align-self:flex-start}
 
   /* Node detail modal */
   .pm-modal-overlay{
@@ -273,8 +282,8 @@
 
   <header class="mast">
     <div class="eyebrow">LAMP Operations</div>
-    <h1>LAMP Operations Workflow</h1>
-    <p class="sub">A reference hub for how programmes are run at LAMP — from mapping the process, to the service blueprint behind it, and the standards programme is held to.</p>
+    <h1>LAMP Resource Hub</h1>
+    <p class="sub">A centralised repository that brings together the information, resources, tools and guidance needed to plan and deliver LAMP programmes from start to finish.</p>
   </header>
 
   <!-- Landing -->
@@ -413,7 +422,7 @@
     </div>
   </div>
 
-  <footer class="tiny">LAMP Operations Workflow · reference hub</footer>
+  <footer class="tiny">LAMP Resource Hub | 2026</footer>
 </div>
 
 <script>
@@ -476,13 +485,31 @@
   // Edit this list to add/change topics — each needs a category name, a short
   // description, and the SharePoint (or other) link to open.
   const REFERENCE_ITEMS = [
+    { category: "Accommodation", subItems: [
+        { label: "In Campus", text: "Placeholder description — add on-campus accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "navy" },
+        { label: "Out of Campus", text: "Placeholder description — add off-campus accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
+        { label: "Overseas", text: "Placeholder description — add overseas accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "teal" },
+      ] },
+    { category: "Appointment", subItems: [
+        { label: "Internal Faculty", text: "Placeholder description — add internal faculty appointment details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "navy" },
+        { label: "External Faculty", text: "Placeholder description — add external faculty appointment details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
+      ] },
     { category: "AV", text: "Placeholder description — add audio-visual equipment and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Event Venue", text: "In-campus or external venues for welcome and closing ceremonies.", link: "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/5%20Facilities%20%26%20Venue/LAMP%20-%20Event%20Venue.xlsx?d=w79c4fa15e42b4d5e8d204ed2697097db&csf=1&web=1&e=Oo6u74" },
+    { category: "Campus Guide", text: "Placeholder description — add campus guide and orientation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Campus Parking Reservation", text: "Placeholder description — add parking reservation process and details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Catering", text: "Placeholder description — add the approved caterer list and contact details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Course Outline Template", text: "Placeholder description — add the course outline template and usage notes.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Course Slides Template", text: "Placeholder description — add the course slides template and usage notes.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Event Venue", subItems: [
+        { label: "Local", text: "In-campus or external venues for welcome and closing ceremonies.", link: "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/5%20Facilities%20%26%20Venue/LAMP%20-%20Event%20Venue.xlsx?d=w79c4fa15e42b4d5e8d204ed2697097db&csf=1&web=1&e=Oo6u74", color: "navy" },
+        { label: "Overseas", text: "Placeholder description — add overseas event venue details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
+      ] },
+    { category: "External Activities", text: "Placeholder description — add external activity options and booking details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
     { category: "External Dining Options", text: "Placeholder description — add nearby external dining options for participants.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "In Campus Accommodation", text: "Placeholder description — add details on approved on-campus accommodation options.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "List of Caterers", text: "Placeholder description — add the approved caterer list and contact details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Faculty Profile", text: "Placeholder description — add faculty profile details and template.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Interpretation", text: "Placeholder description — add interpretation services and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "Landscaping", text: "Placeholder description — add landscaping arrangements and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
     { category: "Logistics", text: "Placeholder description — add logistics arrangements and contact details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Out of Campus Accommodation", text: "Placeholder description — add details on approved off-campus accommodation options.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
     { category: "Photography and Videography", text: "Placeholder description — add approved photography/videography vendors and booking process.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
     { category: "Transport", text: "Placeholder description — add transport arrangements and approved providers.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
   ];
@@ -504,17 +531,43 @@
     qrDropdown.classList.add('open');
   }
 
+  const LINK_ICON_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+  const QR_COLORS = {
+    navy:  { bg:'#475C7A', text:'#FFFFFF' },
+    plum:  { bg:'#685D79', text:'#FFFFFF' },
+    amber: { bg:'#FCBB6D', text:'#000000' },
+    teal:  { bg:'#3E8C82', text:'#FFFFFF' },
+    coral: { bg:'#D8737F', text:'#000000' },
+    mauve: { bg:'#AB6C82', text:'#000000' },
+  };
+
   function showQrResult(item){
     qrInput.value = item.category;
     qrDropdown.classList.remove('open');
-    qrResult.innerHTML =
-      '<div class="cat">' + escapeHtml(item.category) + '</div>' +
-      '<p>' + escapeHtml(item.text) + '</p>' +
-      '<a class="qr-link" href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">Open in SharePoint ' +
-      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a>';
+    if(item.subItems && item.subItems.length){
+      qrResult.innerHTML =
+        '<div class="cat">' + escapeHtml(item.category) + '</div>' +
+        '<div class="qr-subgrid">' +
+        item.subItems.map(si => {
+          const c = QR_COLORS[si.color] || QR_COLORS.navy;
+          return '<div class="qr-subcard" style="border-top:4px solid ' + c.bg + '">' +
+            '<h4>' + escapeHtml(si.label) + '</h4>' +
+            '<p>' + escapeHtml(si.text) + '</p>' +
+            '<a class="qr-link" style="background:' + c.bg + ';color:' + c.text + '" href="' + escapeHtml(si.link) + '" target="_blank" rel="noopener noreferrer">Open in SharePoint ' + LINK_ICON_SVG + '</a>' +
+          '</div>';
+        }).join('') +
+        '</div>';
+    } else {
+      const c = QR_COLORS.navy;
+      qrResult.innerHTML =
+        '<div class="cat">' + escapeHtml(item.category) + '</div>' +
+        '<p>' + escapeHtml(item.text) + '</p>' +
+        '<a class="qr-link" style="background:' + c.bg + ';color:' + c.text + '" href="' + escapeHtml(item.link) + '" target="_blank" rel="noopener noreferrer">Open in SharePoint ' + LINK_ICON_SVG + '</a>';
+    }
   }
 
-  qrInput.addEventListener('focus', ()=> renderQrDropdown(qrInput.value));
+  qrInput.addEventListener('focus', ()=> renderQrDropdown(''));
+  qrInput.addEventListener('click', ()=> renderQrDropdown(''));
   qrInput.addEventListener('input', ()=>{
     renderQrDropdown(qrInput.value);
     if(!qrInput.value.trim()){
