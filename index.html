@@ -223,10 +223,10 @@
 
   .qr-result{
     background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
-    padding:26px 28px;max-width:720px;
+    padding:26px 28px;max-width:820px;
   }
   .qr-result .cat{
-    font-family:"DM Mono",ui-monospace,monospace;font-size:15px;letter-spacing:.14em;text-transform:uppercase;
+    font-family:"DM Mono",ui-monospace,monospace;font-size:16px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--coral);font-weight:600;margin-bottom:10px;
   }
   .qr-result p{font-size:14.5px;color:var(--ink);line-height:1.6;margin-bottom:18px}
@@ -237,13 +237,13 @@
   .qr-result a.qr-link:hover{background:#c0596a}
   .qr-placeholder{color:var(--ink-soft);font-size:14.5px}
 
-  .qr-subgrid{display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:14px}
+  .qr-subgrid{display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:18px}
   .qr-subcard{
     border:1px solid var(--line);border-radius:12px;background:var(--bg);
-    padding:18px 16px;display:flex;flex-direction:column;gap:10px;
+    padding:24px 22px;display:flex;flex-direction:column;gap:12px;
   }
-  .qr-subcard h4{font-size:14px;font-weight:600;color:var(--ink)}
-  .qr-subcard p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:0;flex:1}
+  .qr-subcard h4{font-size:15px;font-weight:600;color:var(--ink)}
+  .qr-subcard p{font-size:14px;color:var(--ink-soft);line-height:1.5;margin:0;flex:1}
   .qr-subcard a.qr-link{font-size:12.5px;padding:8px 13px;align-self:flex-start}
 
   /* Node detail modal */
@@ -486,32 +486,43 @@
   // description, and the SharePoint (or other) link to open.
   const REFERENCE_ITEMS = [
     { category: "Accommodation", subItems: [
-        { label: "In Campus", text: "Placeholder description — add on-campus accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "navy" },
-        { label: "Out of Campus", text: "Placeholder description — add off-campus accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
-        { label: "Overseas", text: "Placeholder description — add overseas accommodation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "teal" },
+        { label: "In Campus", text: "For participants to stay on campus for a more immersive student life experience.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Accommodation/In%20Campus?d=w36d80210f1924b3aa7a6c5e520f52347&csf=1&web=1&e=vsF0Y9", color: "navy" },
+        { label: "Out of Campus", text: "For participants to stay outside campus, with recommendations based on location, rates, amenities, and relevant booking considerations.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Accommodation/Out%20of%20Campus?d=wf4a9fcb2074741539dcdcd4776c6ef70&csf=1&web=1&e=1k0jr7", color: "plum" },
+        { label: "Overseas", text: "Options and considerations for programmes and events conducted overseas, including locations, rates, amenities, and relevant booking considerations.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Accommodation/Overseas?d=wd19eef7e5be349168c20531ab7ecd5c9&csf=1&web=1&e=DMyWMc", color: "teal" },
       ] },
-    { category: "Appointment", subItems: [
-        { label: "Internal Faculty", text: "Placeholder description — add internal faculty appointment details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "navy" },
-        { label: "External Faculty", text: "Placeholder description — add external faculty appointment details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
+    { category: "Appointment and Payment", subItems: [
+        { label: "Internal Faculty", text: "Appointment and payment procedures for NTU faculty (including full-time and PTL).", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Appointment%20%26%20Payment/Internal%20Faculty?d=w89df2d14b33d4469bd192bd41a72a3c5&csf=1&web=1&e=w1ZGDd", color: "navy" },
+        { label: "External Faculty", text: "Appointment and payment procedures for non-NTU faculty (including adjunct, contract-based, industry speakers).", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Appointment%20%26%20Payment/External%20Faculty?d=w7ce1cc729bd044ffa63d37cb65f073fe&csf=1&web=1&e=qB4X9K", color: "plum" },
       ] },
-    { category: "AV", text: "Placeholder description — add audio-visual equipment and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Campus Guide", text: "Placeholder description — add campus guide and orientation details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Campus Parking Reservation", text: "Placeholder description — add parking reservation process and details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Catering", text: "Placeholder description — add the approved caterer list and contact details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Course Outline Template", text: "Placeholder description — add the course outline template and usage notes.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Course Slides Template", text: "Placeholder description — add the course slides template and usage notes.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "AV", text: "AV support for events, including sound systems, microphones, displays, lighting and other technical requirements.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/AV%20Support?d=wf9463f3084114c3d8f6525da354917e5&csf=1&web=1&e=7u7Z2i" },
+    { category: "Campus Guide", text: "To help participants navigate campus, including food options, sports facilities, shuttle buses and key campus amenities.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Campus%20Guide?d=weaedcfaa98624ec6842cc7124a3e37b9&csf=1&web=1&e=4xne5u" },
+    { category: "Campus Parking Reservation", text: "Guide to reserve parking lot for external guests.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/NTU%20Carparks?d=w102ee6efd69b4b13ae97489a34621a54&csf=1&web=1&e=SVvudW" },
+    { category: "Catering", text: "A curated list of caterers with its signature cuisines listed to match the diverse culture and dietary profiles of participants.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/F%26B/Catering?d=wea3c9c74dc29407a917d5fd47da340bd&csf=1&web=1&e=oVsbM9" },
+    { category: "Corporate Gift", subItems: [
+        { label: "via NBS Comms", text: "A list of corporate gifts available through NBS Comms.", link: "https://entuedu.sharepoint.com/sites/Intranet/cs/nbs/SitePages/NBS-Corporate-Gifts.aspx", color: "navy" },
+        { label: "via NTU Events Office", text: "A list of corporate gifts available through NTU Events Office.", link: "https://entuedu.sharepoint.com/:u:/r/sites/Intranet/dept/eo/SitePages/Memento-Request.aspx?csf=1&web=1&e=ItqdsZ", color: "plum" },
+        { label: "via NTU Gift Shop", text: "A list of corporate gifts available through NTU Gift Shop.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Corporate%20Gift/NTU%20Gift%20Shop?d=wc2a36ad8de86428d95819c36d441e81b&csf=1&web=1&e=dBODDY", color: "teal" },
+      ] },
+    { category: "Curriculum", subItems: [
+        { label: "Course Evaluation", text: "Guide to setting up Verint form to collect course feedback from participants.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Curriculum/Course%20Evaluation?d=wa5ecd7737c0c43a2b3f76f7dc3f99813&csf=1&web=1&e=SWqHZx", color: "navy" },
+        { label: "Course Outline Template", text: "Standard format for instructor's input.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Curriculum/Course%20Outline?d=w738907fc01f04251a376c6ec20b4a771&csf=1&web=1&e=7Evar5", color: "plum" },
+        { label: "Course Slides Template", text: "Standard format for instructor's input.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Curriculum/Course%20Slides?d=wc82743f8db8146ce86400c4a580ba578&csf=1&web=1&e=MrdraI", color: "teal" },
+      ] },
     { category: "Event Venue", subItems: [
-        { label: "Local", text: "In-campus or external venues for welcome and closing ceremonies.", link: "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/5%20Facilities%20%26%20Venue/LAMP%20-%20Event%20Venue.xlsx?d=w79c4fa15e42b4d5e8d204ed2697097db&csf=1&web=1&e=Oo6u74", color: "navy" },
-        { label: "Overseas", text: "Placeholder description — add overseas event venue details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General", color: "plum" },
+        { label: "Local", text: "In-campus or external event venues (e.g. welcome / closing ceremonies, panel discussions etc.).", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/Event%20Venue%20-%20Local?d=wc0c2963f76fd421eb715a7259a4dfbf0&csf=1&web=1&e=WEO6jj", color: "navy" },
+        { label: "Overseas", text: "Venue consideration for events conducted overseas.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/Event%20Venue%20-%20Overseas?d=wb6b03ae97d954873acaf4993794076ed&csf=1&web=1&e=6tWScB", color: "plum" },
       ] },
-    { category: "External Activities", text: "Placeholder description — add external activity options and booking details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "External Dining Options", text: "Placeholder description — add nearby external dining options for participants.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Faculty Profile", text: "Placeholder description — add faculty profile details and template.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Interpretation", text: "Placeholder description — add interpretation services and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Landscaping", text: "Placeholder description — add landscaping arrangements and vendor details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Logistics", text: "Placeholder description — add logistics arrangements and contact details.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Photography and Videography", text: "Placeholder description — add approved photography/videography vendors and booking process.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
-    { category: "Transport", text: "Placeholder description — add transport arrangements and approved providers.", link: "https://entuedu.sharepoint.com/sites/ACP-EEOperations/Shared%20Documents/General" },
+    { category: "External Activities", text: "A curated list of agencies and guides offering tours of Singapore's cultural and heritage sites.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/External%20Activities?d=w15ffc1ffab6a4eeb9762745bc940a481&csf=1&web=1&e=BQ6gZt" },
+    { category: "External Dining Options", text: "A curated list of restaurants for dining outside campus.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/F%26B/External%20Dining?d=wca68957c24ba498b967680b2d3dd1d85&csf=1&web=1&e=wX3fLY" },
+    { category: "Faculty Profile", text: "Latest available faculty profiles, provided for reference.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Curriculum/Faculty%20Profile?d=w99fe8b6bd29745edb0d285457ca033e1&csf=1&web=1&e=qgG1mJ" },
+    { category: "Interpretation", text: "A list of simultaneous interpretation equipment vendors and professional interpreters.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Interpretation?d=w3b876c150af843e79655dc273f82c6fd&csf=1&web=1&e=cbnzWX" },
+    { category: "Landscaping", text: "Services to enhance the visual appearance of a venue.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/Landscaping?d=wed593476188845fb9c0739c577c4950b&csf=1&web=1&e=wyt2X0" },
+    { category: "Logistics", text: "Support for moving heavy or bulky items.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Logistics?d=w8817fbf3aee8405c90852fa85dbef34d&csf=1&web=1&e=RHbQUK" },
+    { category: "Photography and Videography", text: "Professional documentation of events.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Photography%20%26%20Video?d=w92effd651956459b88edeaa530ba057d&csf=1&web=1&e=fu6ndK" },
+    { category: "Policies, Procedures and Framework", text: "A baseline ensuring daily operations meet compliance and accountability standards.", link: "https://entuedu.sharepoint.com/sites/PolicyPortal/SitePages/Policies-Procedures-and-Framework.aspx" },
+    { category: "Storeroom Inventory", text: "Monitor stock levels of LAMP programme items and replenish when required.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Storeroom%20Inventory?d=w07cf78d5945e4af5b9efb529a854d0a0&csf=1&web=1&e=BlAbsB" },
+    { category: "Templates", text: "Standard format for input.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Templates?d=w30265d957a544aba99e7d2c63b235c13&csf=1&web=1&e=P2lN4E" },
+    { category: "Transport", text: "A curated list of transportation vendors.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Transportation?d=waff5f464e87941adbde95b1bfcf4ed19&csf=1&web=1&e=cl5haq" },
   ];
 
   const qrInput = document.getElementById('qrInput');
