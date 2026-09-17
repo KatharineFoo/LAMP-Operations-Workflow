@@ -28,6 +28,29 @@
     text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:10px}
   h1{font-size:32px;font-weight:600;letter-spacing:-.01em;color:var(--navy)}
   .sub{color:var(--ink-soft);font-size:15.5px;margin-top:8px;max-width:560px}
+  .new-badge{
+    position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:inherit;
+    font-size:15px;font-weight:700;color:#fff;background:var(--coral);border:none;border-radius:999px;
+    padding:12px 22px;cursor:pointer;box-shadow:0 4px 14px rgba(216,115,127,.45);
+    animation:badgePulse 1.8s ease-in-out infinite;
+  }
+  .new-badge:hover{background:#c0596a}
+  .new-badge .ping{
+    position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;
+    background:#FCBB6D;border:2px solid var(--bg);
+  }
+  .new-badge .ping::after{
+    content:"";position:absolute;inset:0;border-radius:50%;background:#FCBB6D;
+    animation:pingRing 1.6s cubic-bezier(0,0,.2,1) infinite;
+  }
+  @keyframes badgePulse{
+    0%,100%{box-shadow:0 4px 14px rgba(216,115,127,.45);transform:scale(1)}
+    50%{box-shadow:0 6px 24px rgba(216,115,127,.75);transform:scale(1.045)}
+  }
+  @keyframes pingRing{
+    0%{transform:scale(1);opacity:.8}
+    75%,100%{transform:scale(2.2);opacity:0}
+  }
 
   .hero-banner{
     margin-bottom:32px;
@@ -314,6 +337,7 @@
     <div class="eyebrow">LAMP Operations</div>
     <h1>LAMP Resource Hub</h1>
     <p class="sub">A centralised repository that brings together the information, resources, tools and guidance needed to plan and deliver LAMP programmes from start to finish.</p>
+    <button class="new-badge" id="newUpdatesBadge" style="display:none">🔔 <span id="newUpdatesCount"></span><span class="ping"></span></button>
   </header>
 
   <!-- Landing -->
@@ -479,6 +503,34 @@
     ).join('');
   }
   renderAnnouncements();
+
+  // "New updates" badge: shows how many announcements a returning visitor
+  // hasn't seen yet, tracked locally in their own browser (no server needed).
+  // First-ever visitors don't see a badge — we just start tracking from here.
+  (function(){
+    const KEY = 'lampHub_seenAnnouncementCount';
+    const badge = document.getElementById('newUpdatesBadge');
+    const countEl = document.getElementById('newUpdatesCount');
+    try {
+      const stored = localStorage.getItem(KEY);
+      if(stored === null){
+        localStorage.setItem(KEY, String(ANNOUNCEMENTS.length));
+        return;
+      }
+      const seen = parseInt(stored, 10) || 0;
+      const newCount = Math.max(0, ANNOUNCEMENTS.length - seen);
+      if(newCount > 0){
+        countEl.textContent = newCount + ' new update' + (newCount > 1 ? 's' : '');
+        badge.style.display = 'inline-flex';
+        badge.addEventListener('click', ()=>{
+          const announceEl = document.querySelector('.announce');
+          if(announceEl) announceEl.scrollIntoView({behavior:'smooth', block:'start'});
+          localStorage.setItem(KEY, String(ANNOUNCEMENTS.length));
+          badge.style.display = 'none';
+        });
+      }
+    } catch(e) { /* localStorage unavailable (e.g. private browsing) — badge just stays hidden */ }
+  })();
 
   const landing = document.getElementById('landing');
   const pmview = document.getElementById('pmview');
