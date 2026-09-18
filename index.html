@@ -115,6 +115,11 @@
     color:var(--coral);white-space:nowrap;min-width:78px;padding-top:2px;
   }
   .announce-item .text{font-size:14px;color:var(--ink);line-height:1.55}
+  .announce-link{
+    display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--coral);
+    text-decoration:none;margin-left:4px;white-space:nowrap;
+  }
+  .announce-link:hover{text-decoration:underline}
   .announce-empty{padding:20px 22px;font-size:13.5px;color:var(--ink-soft)}
 
   /* Detail / placeholder page */
@@ -326,6 +331,16 @@
   .pm-modal-row .val{font-size:14.5px;color:var(--ink);line-height:1.55;white-space:pre-line}
   .pm-modal-row a{color:var(--coral);font-weight:600;text-decoration:none}
   .pm-modal-row a:hover{text-decoration:underline}
+  .pm-modal-links{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+  .pm-modal-links-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+  .pm-modal-link{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;font-weight:600;
+    color:var(--ink);text-decoration:none;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;
+  }
+  .pm-modal-link svg{color:var(--coral);flex-shrink:0}
+  .pm-modal-link:hover{border-color:var(--coral);color:var(--coral)}
+  .pm-modal-link:hover svg{color:var(--coral)}
 
   footer.tiny{margin-top:44px;text-align:center;font-size:12px;color:var(--ink-soft);opacity:.7}
 </style>
@@ -362,7 +377,7 @@
         <span class="go">Open <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M8 1L13 5L8 9M13 5H1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
 
-      <a class="card" data-key="service-blueprint" href="https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Workflow%20Overview/Standard%20Service%20Template%20V2.xlsx?d=w69ac292f995d4755850830ccb076a624&csf=1&web=1&e=QltoIg" target="_blank" rel="noopener noreferrer">
+      <a class="card" data-key="service-blueprint" href="https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Templates/Service%20Blueprint%20Template.xlsx?d=w69ac292f995d4755850830ccb076a624&csf=1&web=1&e=uEWG5C" target="_blank" rel="noopener noreferrer">
         <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
         <span class="tag">Design</span>
         <h2>Service Blueprint</h2>
@@ -484,7 +499,7 @@
   // Edit this list to add/change announcements. Newest first is recommended;
   // they render in the order listed here.
   const ANNOUNCEMENTS = [
-    { date: "2026", text: "Service Standards card now links directly to the Service Standards.xlsx file on SharePoint." },
+    { date: "2026", text: "Service Standards card now links directly to the Service Standards.xlsx file on SharePoint.", link: "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Workflow%20Overview/Service%20Standards.xlsx?d=w720c814ef5984e239b487ea2c208ec4d&csf=1&web=1&e=uUtCMO" },
     { date: "2026", text: "Search topics restructured: added Finance; merged Catering & External Dining into F&B; renamed Campus Parking Reservation → NTU Carparks, Transport → Transportation, Event Venue → Venue, Photography and Videography → Photography and Video." },
     { date: "2026", text: "Added a new Search topic: NTU Lab Visits." },
     { date: "2026", text: "Search results now support multiple linked boxes per topic (e.g. Accommodation, Event Venue)." },
@@ -498,9 +513,14 @@
       list.innerHTML = '<div class="announce-empty">No announcements yet.</div>';
       return;
     }
-    list.innerHTML = ANNOUNCEMENTS.map(a =>
-      '<div class="announce-item"><div class="date">' + escapeHtml(a.date) + '</div><div class="text">' + escapeHtml(a.text) + '</div></div>'
-    ).join('');
+    list.innerHTML = ANNOUNCEMENTS.map(a => {
+      const link = a.link
+        ? ' <a class="announce-link" href="' + escapeHtml(a.link) + '" target="_blank" rel="noopener noreferrer">' +
+          (a.linkLabel ? escapeHtml(a.linkLabel) : 'Open') +
+          ' <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a>'
+        : '';
+      return '<div class="announce-item"><div class="date">' + escapeHtml(a.date) + '</div><div class="text">' + escapeHtml(a.text) + link + '</div></div>';
+    }).join('');
   }
   renderAnnouncements();
 
@@ -970,6 +990,15 @@
   }
   let currentPmNodes = {};
 
+  // Manual per-step extra links, for steps that need more than one reference
+  // document. Add more entries here as needed: "StepID": [{label, url}, ...]
+  const NODE_LINK_OVERRIDES = {
+    T8: [
+      { label: "Programme Evaluation Review Template", url: "https://entuedu.sharepoint.com/:p:/r/sites/ACP-EEOperations/Shared%20Documents/General/Templates/Post-Programme/LAMP%20Post-Programme%20Evaluation%20Review_Template.pptx?d=wb016a2340ac743e9b7e04508b3f9c24f&csf=1&web=1&e=8j1keY" },
+      { label: "Budget vs Actual Expenses", url: "https://entuedu.sharepoint.com/:p:/r/sites/ACP-EEOperations/Shared%20Documents/General/Templates/Post-Programme/LAMP%20Post-Programme%20Budget%20Review_Template.pptx?d=w7524604ec97a4f5b84d9bcca47ae0c6c&csf=1&web=1&e=wvFQYL" },
+    ],
+  };
+
   // --- Rendering ---
   function renderProcessMap(graph){
     const {nodes, edges, pos, skipEdges, canvasW, canvasH, duration} = graph;
@@ -1056,7 +1085,11 @@
     let nodesHtml = '';
     Object.keys(pos).forEach(id=>{
       const n = nodes[id]; const p = pos[id];
-      const link = n.link ? '<a class="doclink" href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener" title="Reference document" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"/></svg></a>' : '';
+      const hasMultiLinks = NODE_LINK_OVERRIDES[id] && NODE_LINK_OVERRIDES[id].length;
+      const docIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"/></svg>';
+      const link = hasMultiLinks
+        ? '<span class="doclink" title="' + NODE_LINK_OVERRIDES[id].length + ' reference documents — click box for details">' + docIconSvg + '</span>'
+        : (n.link ? '<a class="doclink" href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener" title="Reference document" onclick="event.stopPropagation()">' + docIconSvg + '</a>' : '');
       const pic = n.person ? '<span class="pic">' + escapeHtml(n.person) + '</span>' : '';
       const title = n.notes ? ' title="' + escapeHtml(n.notes) + '"' : '';
       const fill = nodeColor(id, n.type);
@@ -1150,10 +1183,30 @@
     if(n.person) rows.push(['Team In-charge', escapeHtml(n.person)]);
     if(n.cond) rows.push(['Condition', escapeHtml(n.cond)]);
     if(n.notes) rows.push(['Notes', escapeHtml(n.notes)]);
-    if(n.link) rows.push(['Reference', '<a href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener">Open document ↗</a>']);
-    pmModalRows.innerHTML = rows.length
+
+    const links = [];
+    const extraLinks = NODE_LINK_OVERRIDES[id];
+    if(extraLinks && extraLinks.length){
+      extraLinks.forEach(l=> links.push({ label: l.label, url: l.url }));
+    } else if(n.link){
+      links.push({ label: 'Reference document', url: n.link });
+    }
+
+    let html = rows.length
       ? rows.map(([lbl,val])=> '<div class="pm-modal-row"><div class="lbl">' + lbl + '</div><div class="val">' + val + '</div></div>').join('')
       : '<div class="pm-modal-row"><div class="val">No additional details for this step.</div></div>';
+
+    if(links.length){
+      html += '<div class="pm-modal-links">' +
+        '<div class="pm-modal-links-head">Reference Documents</div>' +
+        links.map(l => '<a class="pm-modal-link" href="' + escapeHtml(l.url) + '" target="_blank" rel="noopener">' +
+          escapeHtml(l.label) +
+          ' <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a>'
+        ).join('') +
+        '</div>';
+    }
+
+    pmModalRows.innerHTML = html;
     pmModalOverlay.classList.add('open');
   }
   function closePmModal(){ pmModalOverlay.classList.remove('open'); }
