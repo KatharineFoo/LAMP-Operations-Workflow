@@ -499,6 +499,7 @@
   // Edit this list to add/change announcements. Newest first is recommended;
   // they render in the order listed here.
   const ANNOUNCEMENTS = [
+    { date: "2026", text: "Search topics updated: renamed NTU Lab Visits → Industry Visits, now with two linked boxes (NTU Lab, Corporate Visits)." },
     { date: "2026", text: "Service Standards card now links directly to the Service Standards.xlsx file on SharePoint.", link: "https://entuedu.sharepoint.com/:x:/r/sites/ACP-EEOperations/Shared%20Documents/General/Workflow%20Overview/Service%20Standards.xlsx?d=w720c814ef5984e239b487ea2c208ec4d&csf=1&web=1&e=uUtCMO" },
     { date: "2026", text: "Search topics restructured: added Finance; merged Catering & External Dining into F&B; renamed Campus Parking Reservation → NTU Carparks, Transport → Transportation, Event Venue → Venue, Photography and Videography → Photography and Video." },
     { date: "2026", text: "Added a new Search topic: NTU Lab Visits." },
@@ -610,13 +611,16 @@
         { label: "Catering", text: "A curated list of caterers with its signature cuisines listed to match the diverse culture and dietary profiles of participants.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/F%26B/Catering?d=wea3c9c74dc29407a917d5fd47da340bd&csf=1&web=1&e=oVsbM9", color: "navy" },
         { label: "External Dining", text: "A curated list of restaurants for dining outside campus.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/F%26B/External%20Dining?d=wca68957c24ba498b967680b2d3dd1d85&csf=1&web=1&e=wX3fLY", color: "plum" },
       ] },
-    { category: "Faculty Profile", text: "Latest available faculty profiles, provided for reference.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Curriculum/Faculty%20Profile?d=w99fe8b6bd29745edb0d285457ca033e1&csf=1&web=1&e=THD0gC" },
+    { category: "Faculty Profile", text: "Latest available faculty profiles, provided for reference.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Faculty%20Profile?d=w99fe8b6bd29745edb0d285457ca033e1&csf=1&web=1&e=THD0gC" },
     { category: "Finance", text: "Finance procedures and guidelines for daily operations.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Finance?d=w5d5b7afa48654ad1aaea45bcabe3fa77&csf=1&web=1&e=908MgG" },
+    { category: "Industry Visits", subItems: [
+        { label: "NTU Lab", text: "List of available lab visits and booking details.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Industry%20Visits/NTU%20Lab%20Visits?d=wef73ea949a354767b9b0a2ead16d640e&csf=1&web=1&e=kRUFUY", color: "navy" },
+        { label: "Corporate Visits", text: "List of corporate visits and point of contact.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Industry%20Visits/Corporate%20Visits?d=w41f0c3e89c2745d691f72712c288eef6&csf=1&web=1&e=GtF1tc", color: "plum" },
+      ] },
     { category: "Interpretation", text: "A list of simultaneous interpretation equipment vendors and professional interpreters.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Interpretation?d=w3b876c150af843e79655dc273f82c6fd&csf=1&web=1&e=cbnzWX" },
     { category: "Landscaping", text: "Services to enhance the visual appearance of a venue.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Facilities%20%26%20Venue/Landscaping?d=wed593476188845fb9c0739c577c4950b&csf=1&web=1&e=wyt2X0" },
     { category: "Logistics", text: "Support for moving heavy or bulky items.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Logistics?d=w8817fbf3aee8405c90852fa85dbef34d&csf=1&web=1&e=RHbQUK" },
     { category: "NTU Carparks", text: "Guide to reserve parking lot for external guests.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/NTU%20Carparks?d=w102ee6efd69b4b13ae97489a34621a54&csf=1&web=1&e=2J0mk3" },
-    { category: "NTU Lab Visits", text: "List of available lab visits and booking details.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/NTU%20Lab%20Visits?d=wef73ea949a354767b9b0a2ead16d640e&csf=1&web=1&e=v7QKfh" },
     { category: "Photography and Video", text: "Professional documentation of events.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Photography%20%26%20Video?d=w92effd651956459b88edeaa530ba057d&csf=1&web=1&e=fu6ndK" },
     { category: "Policies, Procedures and Framework", text: "A baseline ensuring daily operations meet compliance and accountability standards.", link: "https://entuedu.sharepoint.com/sites/PolicyPortal/SitePages/Policies-Procedures-and-Framework.aspx" },
     { category: "Storeroom Inventory", text: "Monitor stock levels of LAMP programme items and replenish when required.", link: "https://entuedu.sharepoint.com/:f:/r/sites/ACP-EEOperations/Shared%20Documents/General/Storeroom%20Inventory?d=w07cf78d5945e4af5b9efb529a854d0a0&csf=1&web=1&e=BlAbsB" },
