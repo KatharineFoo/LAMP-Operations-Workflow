@@ -12,16 +12,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
-    --navy:#475C7A; --plum:#685D79; --mauve:#AB6C82; --coral:#D8737F; --amber:#FCBB6D; --teal:#3E8C82;
-    --bg:#F7F3F1; --panel:#FFFFFF; --ink:#33303A; --ink-soft:#726C7A; --line:#E7E0DE;
-    --shadow:0 1px 2px rgba(51,48,58,.05),0 10px 30px rgba(71,92,122,.08);
+    --navy:#181C62; --plum:#A5247F; --mauve:#0054A6; --coral:#D71440; --amber:#FCBB6D; --teal:#007C48;
+    --bg:#F8F8F8; --panel:#FFFFFF; --ink:#33303A; --ink-soft:#726C7A; --line:#8C8C8C;
+    --shadow:0 1px 2px rgba(51,48,58,.05),0 10px 30px rgba(24,28,98,.08);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
     background:
       radial-gradient(1000px 550px at 105% -10%, rgba(252,187,109,.16) 0%, transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(71,92,122,.12) 0%, transparent 55%),
+      radial-gradient(900px 500px at -10% 110%, rgba(24,28,98,.12) 0%, transparent 55%),
       var(--bg);
     color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
     padding:34px 18px 70px;min-height:100vh;
@@ -35,11 +35,11 @@
   .sub{color:var(--ink-soft);font-size:15.5px;margin-top:8px;max-width:560px}
   .new-badge{
     position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:inherit;
-    font-size:15px;font-weight:700;color:#fff;background:var(--coral);border:none;border-radius:999px;
-    padding:12px 22px;cursor:pointer;box-shadow:0 4px 14px rgba(216,115,127,.45);
+    font-size:15px;font-weight:700;color:#fff;background:#D71440;border:none;border-radius:999px;
+    padding:12px 22px;cursor:pointer;box-shadow:0 4px 14px rgba(215,20,64,.45);
     animation:badgePulse 1.8s ease-in-out infinite;
   }
-  .new-badge:hover{background:#c0596a}
+  .new-badge:hover{background:#B01034}
   .new-badge .ping{
     position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;
     background:#FCBB6D;border:2px solid var(--bg);
@@ -49,8 +49,8 @@
     animation:pingRing 1.6s cubic-bezier(0,0,.2,1) infinite;
   }
   @keyframes badgePulse{
-    0%,100%{box-shadow:0 4px 14px rgba(216,115,127,.45);transform:scale(1)}
-    50%{box-shadow:0 6px 24px rgba(216,115,127,.75);transform:scale(1.045)}
+    0%,100%{box-shadow:0 4px 14px rgba(215,20,64,.45);transform:scale(1)}
+    50%{box-shadow:0 6px 24px rgba(215,20,64,.75);transform:scale(1.045)}
   }
   @keyframes pingRing{
     0%{transform:scale(1);opacity:.8}
@@ -71,7 +71,7 @@
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     text-align:left;display:block;text-decoration:none;color:inherit;
   }
-  .card:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(51,48,58,.06),0 18px 40px rgba(71,92,122,.14)}
+  .card:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(51,48,58,.06),0 18px 40px rgba(24,28,98,.14)}
   .card:focus-visible{outline:2px solid var(--navy);outline-offset:3px}
   .card::before{
     content:"";position:absolute;top:0;left:24px;right:24px;height:3px;border-radius:0 0 3px 3px;
@@ -79,8 +79,8 @@
   }
   .card[data-key="process-map"]{--accent:var(--teal)}
   .card[data-key="service-blueprint"]{--accent:var(--mauve)}
-  .card[data-key="service-standards"]{--accent:var(--navy)}
-  .card[data-key="quick-reference"]{--accent:var(--coral)}
+  .card[data-key="service-standards"]{--accent:#A5247F}
+  .card[data-key="quick-reference"]{--accent:#ED1556}
   .card .icon{
     width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
     background:var(--accent);color:#fff;
@@ -110,18 +110,19 @@
     background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
     overflow:hidden;
   }
+  .announce-head .eyebrow{color:#ED1556}
   .announce-item{
     display:flex;gap:16px;align-items:flex-start;padding:16px 22px;border-bottom:1px solid var(--line);
-    border-left:3px solid var(--coral);
+    border-left:3px solid #ED1556;
   }
   .announce-item:last-child{border-bottom:none}
   .announce-item .date{
     font-family:"DM Mono",ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:.04em;
-    color:var(--coral);white-space:nowrap;min-width:78px;padding-top:2px;
+    color:#ED1556;white-space:nowrap;min-width:78px;padding-top:2px;
   }
   .announce-item .text{font-size:14px;color:var(--ink);line-height:1.55}
   .announce-link{
-    display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--coral);
+    display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:#ED1556;
     text-decoration:none;margin-left:4px;white-space:nowrap;
   }
   .announce-link:hover{text-decoration:underline}
@@ -209,7 +210,7 @@
   }
   .btn:hover{border-color:var(--teal);color:var(--teal)}
   .btn-primary{background:var(--teal);border-color:var(--teal);color:#fff}
-  .btn-primary:hover{background:#347369;border-color:#347369;color:#fff}
+  .btn-primary:hover{background:#00663B;border-color:#00663B;color:#fff}
   .btn-ghost{font-size:12.5px;padding:7px 13px}
 
   /* Map toolbar */
@@ -265,6 +266,7 @@
   .qr-title .icon{width:34px;height:34px;border-radius:10px;background:var(--coral);color:#fff;
     display:flex;align-items:center;justify-content:center;flex-shrink:0}
   .qr-title .icon svg{width:18px;height:18px}
+  .qr-col-chat .qr-title .icon{background:#1B75BC}
   .qr-title h2{font-size:21px;font-weight:600;color:var(--ink)}
 
   .qr-columns{display:flex;align-items:flex-start;gap:36px;flex-wrap:wrap}
@@ -302,7 +304,7 @@
     display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#fff;
     background:var(--coral);border-radius:10px;padding:10px 16px;text-decoration:none;
   }
-  .qr-result a.qr-link:hover{background:#c0596a}
+  .qr-result a.qr-link:hover{background:#B01034}
   .qr-placeholder{color:var(--ink-soft);font-size:14.5px}
 
   .qr-subgrid{display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:18px}
@@ -325,34 +327,34 @@
   .chat-msg.assistant{justify-content:flex-start}
   .chat-msg .bubble{max-width:88%;font-size:14px;line-height:1.55;border-radius:14px;padding:12px 15px}
   .chat-msg.assistant .bubble{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:4px}
-  .chat-msg.user .bubble{background:var(--coral);color:#fff;border-bottom-right-radius:4px}
+  .chat-msg.user .bubble{background:#1B75BC;color:#fff;border-bottom-right-radius:4px}
   .chat-msg .bubble .cat{
     font-family:"DM Mono",ui-monospace,monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--coral);font-weight:600;display:block;margin-bottom:4px;
+    color:#1B75BC;font-weight:600;display:block;margin-bottom:4px;
   }
   .chat-msg .bubble p{margin:0 0 10px;font-size:13.5px;color:var(--ink)}
   .chat-msg .bubble .qr-link{
     display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:#fff;
-    background:var(--coral);border-radius:9px;padding:8px 13px;text-decoration:none;margin:2px 6px 2px 0;
+    background:#1B75BC;border-radius:9px;padding:8px 13px;text-decoration:none;margin:2px 6px 2px 0;
   }
-  .chat-msg .bubble .qr-link:hover{background:#c0596a}
+  .chat-msg .bubble .qr-link:hover{background:#15598F}
   .chat-suggestlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .chat-suggest{
     font-size:12px;color:var(--ink-soft);border:1px solid var(--line);background:var(--panel);
     border-radius:8px;padding:5px 10px;cursor:pointer;
   }
-  .chat-suggest:hover{border-color:var(--coral);color:var(--coral)}
+  .chat-suggest:hover{border-color:#1B75BC;color:#1B75BC}
   .chat-form{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--line);background:var(--bg)}
   .chat-form input{
     flex:1;font-family:inherit;font-size:14px;padding:11px 14px;border:1.5px solid var(--line);
     border-radius:10px;background:var(--panel);
   }
-  .chat-form input:focus{outline:none;border-color:var(--coral)}
+  .chat-form input:focus{outline:none;border-color:#1B75BC}
   .chat-form button{
-    font-family:inherit;font-size:13.5px;font-weight:600;color:#fff;background:var(--coral);
+    font-family:inherit;font-size:13.5px;font-weight:600;color:#fff;background:#1B75BC;
     border:none;border-radius:10px;padding:0 18px;cursor:pointer;
   }
-  .chat-form button:hover{background:#c0596a}
+  .chat-form button:hover{background:#15598F}
 
   /* Node detail modal */
   .pm-modal-overlay{
@@ -392,10 +394,50 @@
   .pm-modal-link:hover{border-color:var(--coral);color:var(--coral)}
   .pm-modal-link:hover svg{color:var(--coral)}
 
+  #pageWrap{display:none}
+  .auth-gate{
+    position:fixed;inset:0;background:var(--bg);z-index:200;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .auth-gate.hidden{display:none}
+  .auth-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    max-width:360px;width:100%;padding:34px 30px 30px;text-align:center;
+  }
+  .auth-icon{font-size:30px;margin-bottom:10px}
+  .auth-card h2{font-size:19px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .auth-card p{font-size:13.5px;color:var(--ink-soft);margin-bottom:20px}
+  .auth-card form{display:flex;flex-direction:column;gap:10px}
+  .auth-card input{
+    font-family:inherit;font-size:14.5px;color:var(--ink);background:var(--bg);
+    border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:center;
+  }
+  .auth-card input:focus{outline:none;border-color:var(--navy)}
+  .auth-card button{
+    font-family:inherit;font-size:14.5px;font-weight:700;color:#fff;background:var(--navy);
+    border:none;border-radius:10px;padding:12px 14px;cursor:pointer;
+  }
+  .auth-card button:hover{background:#121449}
+  .auth-error{font-size:13px;color:var(--coral);margin-top:14px;margin-bottom:0}
+
   footer.tiny{margin-top:44px;text-align:center;font-size:12px;color:var(--ink-soft);opacity:.7}
 </style>
 </head>
 <body>
+
+<div class="auth-gate" id="authGate">
+  <div class="auth-card">
+    <div class="auth-icon">🔒</div>
+    <h2>LAMP Resource Hub</h2>
+    <p>Enter the password to continue.</p>
+    <form id="authForm" autocomplete="off">
+      <input type="password" id="authInput" placeholder="Password" autocomplete="off" />
+      <button type="submit">Unlock</button>
+    </form>
+    <p class="auth-error" id="authError" style="display:none">Incorrect password. Please try again.</p>
+  </div>
+</div>
+
 <div class="wrap" id="pageWrap">
 
   <header class="mast">
@@ -566,6 +608,43 @@
 </div>
 
 <script>
+  (function(){
+    var AUTH_KEY = 'lampHub_authOk';
+    var PASSWORD = 'ACP01028';
+    var gate = document.getElementById('authGate');
+    var wrap = document.getElementById('pageWrap');
+    var form = document.getElementById('authForm');
+    var input = document.getElementById('authInput');
+    var error = document.getElementById('authError');
+
+    function unlock(remember){
+      gate.classList.add('hidden');
+      wrap.style.display = 'block';
+      if(remember){
+        try { localStorage.setItem(AUTH_KEY, 'ok'); } catch(e) { /* storage unavailable */ }
+      }
+    }
+
+    var alreadyOk = false;
+    try { alreadyOk = localStorage.getItem(AUTH_KEY) === 'ok'; } catch(e) { /* storage unavailable */ }
+    if(alreadyOk){
+      unlock(false);
+    } else {
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(input.value === PASSWORD){
+          unlock(true);
+        } else {
+          error.style.display = 'block';
+          input.value = '';
+          input.focus();
+        }
+      });
+    }
+  })();
+</script>
+
+<script>
   /* ---------- Landing / generic placeholder logic ---------- */
   /* ---------- Announcements board ---------- */
   // Edit this list to add/change announcements. Newest first is recommended;
@@ -726,12 +805,12 @@
 
   const LINK_ICON_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
   const QR_COLORS = {
-    navy:  { bg:'#475C7A', text:'#FFFFFF' },
-    plum:  { bg:'#685D79', text:'#FFFFFF' },
+    navy:  { bg:'#181C62', text:'#FFFFFF' },
+    plum:  { bg:'#A5247F', text:'#FFFFFF' },
     amber: { bg:'#FCBB6D', text:'#000000' },
-    teal:  { bg:'#3E8C82', text:'#FFFFFF' },
-    coral: { bg:'#D8737F', text:'#000000' },
-    mauve: { bg:'#AB6C82', text:'#000000' },
+    teal:  { bg:'#007C48', text:'#FFFFFF' },
+    coral: { bg:'#D71440', text:'#FFFFFF' },
+    mauve: { bg:'#0054A6', text:'#FFFFFF' },
   };
 
   function showQrResult(item){
